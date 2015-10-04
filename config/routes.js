@@ -3,6 +3,10 @@ module.exports.routes = {
          controller: 'main',
          action: 'index'
     },
+    '/openRoom' : {
+      controller: 'main',
+      action: 'openRoom'
+    },
     '/signup' : {
          controller: 'main',
          action: 'signup'
@@ -14,6 +18,10 @@ module.exports.routes = {
     '/chat' : {
          controller: 'main',
          action: 'chat'
+    },
+    '/GET /message' : {
+      controller: 'message',
+      action: 'index'
     }
 };
 

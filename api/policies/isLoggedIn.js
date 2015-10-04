@@ -1,9 +1,8 @@
 module.exports = function (req, res, next) {
-    if (req.session.user) {
+    if (req.session.room) {
         var action = req.options.action;
         if (action == "create") {
-            req.body.userId = req.session.user.id;
-            req.body.username = req.session.user.username;
+            req.body.roomName = req.session.room.roomName;
         }
         next();
     } else {

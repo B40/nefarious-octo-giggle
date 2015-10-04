@@ -1,9 +1,8 @@
 <img src="/images/B40-logo.png"/>
 <h3>Start a challenge</h3>
 <div>
-    <h3>Login</h3>
-    <input type="text" id="loginName" placeholder="name" />
-    <input type="password" id="loginPassword" placeholder="password" />
+    <input type="text" id="roomName" placeholder="name" />
+    <input type="password" id="password" placeholder="password" />
     <button id="loginButton">Login</button>
 </div>
 <div>
@@ -14,13 +13,20 @@
 </div>
 
 <script>
+var roomName = "";
     $("#loginButton").click(function(){
-        var username = $("#loginName").val();
-        var password = $("#loginPassword").val();
-        if (username && password) {
+      // // Check if the room name has been entered already.
+      // if (roomName === "") {
+      //   var input = $('#loginName');
+      //   roomName = input.val();
+      //   input.val('');
+      // }
+        var roomName = $("#roomName").val();
+        var password = $("#password").val();
+        if (roomName && password) {
             $.post(
-                '/login',
-                {username: username, password:password},
+                '/openRoom',
+                {roomName: roomName, password:password},
                 function () {
                     window.location = "/chat";
                 }
@@ -28,7 +34,7 @@
                 alert("Error: " + res.getResponseHeader("error"));
             });
         } else {
-            alert("A username and password is required");
+            alert("A roomName and password is required");
         }
     });
 

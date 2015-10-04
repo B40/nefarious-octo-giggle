@@ -1,4 +1,4 @@
-<h2>Welcome <%= username %></h2>
+<h2>Welcome to <%= roomName %></h2>
 <div id="newMessageForm">
     <textarea id="message" placeholder="Enter your message here:"></textarea>
     <button id="postMessageButton">Add Message</button>
@@ -8,7 +8,7 @@
 
 <script>
     var MessageModel = Backbone.Model.extend({
-        urlRoot: '/messages',
+        urlRoot: '/message',
     });
 
     // var SailsCollection = Backbone.Collection.extend({
@@ -51,7 +51,7 @@
     // });
 
     var MessageCollection = Backbone.Collection.extend({
-        url: '/messages',
+        url: '/message',
         model: MessageModel,
     });
     
@@ -73,7 +73,7 @@
             this.collection.on('add', this.render, this);
             this.render();
         },
-        template: _.template("<div><p><b>{{ username }}: </b>{{ message }}</p></div>"),
+        template: _.template("<div><p>{{ message }}</p></div>"),
             render: function () {
                 this.$el.html("");
                 this.collection.each(function(msg){
