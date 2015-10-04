@@ -143,7 +143,7 @@ var MainController = {
 
   chat: function (req, res) {
      if (req.session.room) {
-       res.view({ roomName: req.session.room.roomName });
+       res.view({ room: req.session.room });
      } else {
        res.redirect('/');
      }

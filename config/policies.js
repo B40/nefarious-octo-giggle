@@ -19,5 +19,5 @@
 
 module.exports.policies = { 
     '*': true,
-    'message': 'isLoggedIn'
+    'message': ['isLoggedIn', 'groupHasExpired']
 };

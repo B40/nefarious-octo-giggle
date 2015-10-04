@@ -1,58 +1,70 @@
 <img src="/images/B40-logo.png"/>
-<h3>Start a challenge</h3>
-<div>
-    <input type="text" id="roomName" placeholder="name" />
-    <input type="password" id="password" placeholder="password" />
+
+<h1 id="startChallenge">Start a challenge</h1>
+<div id="loginWrapper">
+    <h1>Login</h1>
+    <input type="text" id="loginName" placeholder="Name Your Challenge">
+    <div id="passwordWrapper">
+        <p>Remember your unique password is...</p>
+        <input type="text" id="loginPassword" placeholder="password">
+        <!-- <button id="refreshPassword">Refresh Password</button> -->
+    </div>
     <button id="loginButton">Login</button>
 </div>
-<div>
-    <h3>Signup</h3>
-    <input type="text" id="signupName" placeholder="name" />
-    <input type="password" id="signupPassword" placeholder="password" />
-    <button id="signupButton" src="images/next-off.png">Signup</button>
-</div>
-
 <script>
-var roomName = "";
-    $("#loginButton").click(function(){
-      // // Check if the room name has been entered already.
-      // if (roomName === "") {
-      //   var input = $('#loginName');
-      //   roomName = input.val();
-      //   input.val('');
-      // }
-        var roomName = $("#roomName").val();
-        var password = $("#password").val();
+    var roomName = "";
+    
+     $("#loginName").on('input', function(){
+         if($(this).val() != ""){
+             $("#loginButton").addClass("activeButtonBg");
+         }
+         else {
+             $("#loginButton").removeClass("activeButtonBg");
+         }
+     });
+    
+    $("#loginButton").on('click', function(){
+      if ($("#loginName").val() != "" && roomName === "") {
+        roomName = $("#loginName").val();
+        $("#loginName").hide();
+        $("#passwordWrapper").show();
+        $("#loginPassword").focus();
+        // TODO check if room exists and if not then generate password. Also unhide pw refresh btn
+      } else {
+        var password = $("#loginPassword").val();
         if (roomName && password) {
-            $.post(
-                '/openRoom',
-                {roomName: roomName, password:password},
-                function () {
-                    window.location = "/chat";
-                }
-            ).fail(function(res){
-                alert("Error: " + res.getResponseHeader("error"));
-            });
+          $.post(
+            '/openRoom',
+            {roomName: roomName, password: password},
+            function () {
+              window.location = "/chat";
+            }
+          ).fail(function(res){
+            alert("Error: " + res.getResponseHeader("error"));
+            roomName = "";
+            $("#passwordWrapper").hide();
+            $("#loginPassword").val('');
+            $("#loginName").show();
+            $("#loginName").focus();            
+          });
         } else {
-            alert("A roomName and password is required");
+          alert("A password is required");
         }
+      }
+      
     });
 
-    $("#signupButton").click(function(){
-        var username = $("#signupName").val();
-        var password = $("#signupPassword").val();
-        if (username && password) {
-            $.post(
-                '/signup',
-                {username: username, password:password},
-                function () {
-                    window.location = "/chat";
-                }
-            ).fail(function(res){
-                alert("Error: " + res.getResponseHeader("error"));
-            });
-        } else {
-            alert("A username and password is required");
-        }
+    $("#loginName").on('keydown', function(e){
+      if(e.which == 13 || e.which == 9) {
+        $("#loginButton").trigger('click');
+        return false;
+      }
+    });
+    
+    $("#loginPassword").on('keydown', function(e){
+      if(e.which == 13 || e.which == 9) {
+        $("#loginButton").trigger('click');
+        return false;
+      }
     });
 </script>

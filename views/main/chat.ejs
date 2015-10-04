@@ -1,9 +1,14 @@
-<h2>Welcome to <%= roomName %></h2>
-<div id="newMessageForm">
-    <textarea id="message" placeholder="Enter your message here:"></textarea>
-    <button id="postMessageButton">Add Message</button>
+<h2><%= room.roomName %></h2>
+
+
+<img src="images/B40-logo-small.png">
+
+<div id="messagesContainer" style="background:url('images/timeline.png');background-repeat:repeat-y;background-position:center;text-align:center">
 </div>
-<div id="messagesContainer">
+<div id="newMessageForm">
+    <textarea id="message" placeholder="Type prayer or response here..."></textarea>
+    <br>
+    <button id="postMessageButton">Send</button>
 </div>
 
 <script>
@@ -82,5 +87,31 @@
         }
     });
     
-    var mView = new MessagesView({collection: messages});
+    var start = new Date('<%= room.start %>');
+    var days = [];
+    
+    var daysBetween = function( date1, date2 ) {
+      //Get 1 day in milliseconds
+      var one_day=1000*60*60*24;
+
+      // Convert both dates to milliseconds
+      var date1_ms = date1.getTime();
+      var date2_ms = date2.getTime();
+
+      // Calculate the difference in milliseconds
+      var difference_ms = date2_ms - date1_ms;
+    
+      // Convert back to days and return
+      return Math.round(difference_ms/one_day); 
+    }
+    
+    messages.each(function(msg) {
+      var day = daysBetween(start, new Date(msg.get('createdAt')));
+      console.log(day);
+    });
+    for (var i = 0; i < 40; i++) {
+      
+    }
+    
+    // var mView = new MessagesView({collection: messages});
 </script>
