@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-	index: function(req, res) {
+	find: function(req, res) {
     if (req.session.room) {
       Message.find({where: { roomName: req.session.room.roomName }})
       .exec(function getMessages(err, messages) {
@@ -20,6 +20,21 @@ module.exports = {
         }
       });
     }
-	}
+	},
+  
+  post: function(req, res) {
+    if (req.session.room) {
+      Message.create({room: req.session.room, content: req.body.message})
+      .exec(function(err, msg) {
+        if (err) {
+          // Set the error header
+          res.set('error', 'DB Error');
+          res.send(500, { error: "DB Error" });
+        } else {
+          res.send(msg);
+        }
+      })
+    }
+  }
 };
 

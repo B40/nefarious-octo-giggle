@@ -19,6 +19,5 @@
 
 module.exports.policies = { 
     '*': true,
-    'message': 'isLoggedIn',
-    'message.find' : 'attachRoom'
+    'message': 'isLoggedIn'
 };

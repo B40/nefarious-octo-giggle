@@ -21,7 +21,11 @@ module.exports.routes = {
     },
     '/GET /message' : {
       controller: 'message',
-      action: 'index'
+      action: 'find'
+    },
+    '/POST /message' : {
+      controller: 'message',
+      action: 'post'
     }
 };
 
