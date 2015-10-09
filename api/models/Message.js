@@ -4,6 +4,10 @@ module.exports = {
          room: {
            model: 'room'
          },
-         content: 'string'
+         content: 'string',
+         day: {
+           type: 'int',
+           defaultsTo: -1
+         }
     }
 };

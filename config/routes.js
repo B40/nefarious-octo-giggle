@@ -19,11 +19,11 @@ module.exports.routes = {
          controller: 'main',
          action: 'chat'
     },
-    '/GET /message' : {
+    'get /message' : {
       controller: 'message',
       action: 'find'
     },
-    '/POST /message' : {
+    'post /message' : {
       controller: 'message',
       action: 'post'
     }

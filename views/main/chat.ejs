@@ -1,15 +1,19 @@
 <h2><%= room.roomName %></h2>
 
 
-<img src="images/B40-logo-small.png">
 
-<div id="messagesContainer" style="background:url('images/timeline.png');background-repeat:repeat-y;background-position:center;text-align:center">
+<div id="chatContainer">
+<img src="images/B40-logo-small.png">
+<div id="messagesContainer" >
+</div>
 </div>
 <div id="newMessageForm">
-    <textarea id="message" placeholder="Type prayer or response here..."></textarea>
+    <input id="input" placeholder="Type prayer or response here..."></textarea>
     <br>
     <button id="postMessageButton">Send</button>
 </div>
+
+<div class="bottomBuffer" />
 
 <script>
     var MessageModel = Backbone.Model.extend({
@@ -55,40 +59,8 @@
     //     model: MessageModel,
     // });
 
-    var MessageCollection = Backbone.Collection.extend({
-        url: '/message',
-        model: MessageModel,
-    });
-    
-    var messages = new MessageCollection();
-    messages.fetch();
-
-    $("#postMessageButton").click(function(){
-        var messageText = $("#message").val();
-        messages.create({message: messageText}, {wait: true});
-        $("#message").val("");
-    });
-    
-    _.templateSettings = {
-        interpolate : /\{\{(.+?)\}\}/g
-    };
-    var MessagesView = Backbone.View.extend({
-        el: '#messagesContainer',
-        initialize: function () {
-            this.collection.on('add', this.render, this);
-            this.render();
-        },
-        template: _.template("<div><p>{{ message }}</p></div>"),
-            render: function () {
-                this.$el.html("");
-                this.collection.each(function(msg){
-                    this.$el.append(this.template(msg.toJSON()));
-                }, this)
-        }
-    });
-    
     var start = new Date('<%= room.start %>');
-    var days = [];
+
     
     var daysBetween = function( date1, date2 ) {
       //Get 1 day in milliseconds
@@ -102,16 +74,83 @@
       var difference_ms = date2_ms - date1_ms;
     
       // Convert back to days and return
-      return Math.round(difference_ms/one_day); 
+      return Math.round(difference_ms/one_day);
     }
-    
-    messages.each(function(msg) {
-      var day = daysBetween(start, new Date(msg.get('createdAt')));
-      console.log(day);
+
+
+    var MessageCollection = Backbone.Collection.extend({
+        url: '/message',
+        model: MessageModel
+      // ,
+//       byDay: function (day) {
+//         filtered = this.filtered(function (msg) {
+//           var created = this.get("createdAt");
+//           var diff = daysBetween(start, new Date(created));
+//           return diff === day;
+        // });
+      // }
     });
-    for (var i = 0; i < 40; i++) {
-      
-    }
     
-    // var mView = new MessagesView({collection: messages});
+    var messages = new MessageCollection();
+    messages.fetch();
+    
+    $("#input").on('keydown', function(e){
+      if(e.which == 13 || e.which == 9) {
+        $("#postMessageButton").trigger('click');
+        return false;
+      }
+    });
+
+    $("#postMessageButton").click(function(){
+        var messageText = $("#input").val();
+        messages.create({message: messageText}, {wait: true});
+        $("#input").val("");
+    });
+    
+    _.templateSettings = {
+        interpolate : /\{\{(.+?)\}\}/g
+    };
+    var MessagesView = Backbone.View.extend({
+        el: '#messagesContainer',
+        initialize: function () {
+            this.collection.on('add', this.render, this);
+            this.render();
+        },
+        template: _.template("<div><p class='message' id='message{{day}}'>{{ content }}</p></div>"),
+        template_day: _.template("<div class='dayLabel'> {{ day }}</div>"),
+        render: function () {
+              this.$el.html("");
+              this.collection.each(function(msg){
+                  this.$el.append(this.template(msg.toJSON()));                 
+              }, this);
+              for (var i = 0; i < 40; i++) {
+                var firstMessageInDay = this.$el.find('#message' + i);
+                if (firstMessageInDay !== null && firstMessageInDay.length > 0) {
+                  firstMessageInDay.before(this.template_day({ day : i+1 }));
+                } else {
+                  this.$el.append(this.template_day({ day : i+1 }));
+                }
+              }
+        }
+    });
+    
+    
+    
+    // var msg = messages.pop();
+    // var created = msg.get('createdAt');
+    // var date = new Date(created);
+    // var diff = daysBetween(start, created);
+
+    // messages.each(function(msg) {
+    //   var created = msg.get('createdAt');
+    //   var day = daysBetween(start, new Date(created));
+    //   msg.day = day;
+    //
+    //   console.log(msg.day);
+    // });
+    // for (var i = 0; i < 40; i++) {
+    //
+    // }
+    
+    var mView = new MessagesView({collection: messages});
 </script>

@@ -8,8 +8,9 @@
 module.exports = {
 	find: function(req, res) {
     if (req.session.room) {
-      Message.find({where: { roomName: req.session.room.roomName }})
+      Message.find({where: { room: req.session.room.roomName }})
       .exec(function getMessages(err, messages) {
+          console.log("messages: " + messages);
         if (err) {
           // We set an error header here, 
           // which we can access in the views and display in the alert call
@@ -24,7 +25,24 @@ module.exports = {
   
   post: function(req, res) {
     if (req.session.room) {
-      Message.create({room: req.session.room, content: req.body.message})
+      var daysBetween = function( date1, date2 ) {
+        //Get 1 day in milliseconds
+        var one_day=1000*60*60*24;
+
+        // Convert both dates to milliseconds
+        var date1_ms = date1.getTime();
+        var date2_ms = date2.getTime();
+
+        // Calculate the difference in milliseconds
+        var difference_ms = date2_ms - date1_ms;
+    
+        // Convert back to days and return
+        return Math.round(difference_ms/one_day);
+      }
+      var start = new Date(req.session.room.start);
+      var now = new Date();
+      var day = daysBetween(start, now);
+      Message.create({room: req.session.room, content: req.body.message, day: day})
       .exec(function(err, msg) {
         if (err) {
           // Set the error header
@@ -37,4 +55,6 @@ module.exports = {
     }
   }
 };
+
+
 
