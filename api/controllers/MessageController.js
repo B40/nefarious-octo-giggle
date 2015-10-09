@@ -10,7 +10,6 @@ module.exports = {
     if (req.session.room) {
       Message.find({where: { room: req.session.room.roomName }})
       .exec(function getMessages(err, messages) {
-          console.log("messages: " + messages);
         if (err) {
           // We set an error header here, 
           // which we can access in the views and display in the alert call
