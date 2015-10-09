@@ -170,5 +170,5 @@ button:focus, input:focus {
   z-index:200;
 }
 .bottomBuffer {
-  height: 8rem;
+  height: 12rem;
 }

@@ -120,9 +120,12 @@
         template_day: _.template("<div class='dayLabel'> {{ day }}</div>"),
         render: function () {
               this.$el.html("");
+              var lastMessage;
               this.collection.each(function(msg){
-                  this.$el.append(this.template(msg.toJSON()));                 
+                lastMessage = this.template(msg.toJSON());
+                  this.$el.append(lastMessage);                 
               }, this);
+
               for (var i = 0; i < 40; i++) {
                 var firstMessageInDay = this.$el.find('#message' + i);
                 if (firstMessageInDay !== null && firstMessageInDay.length > 0) {
@@ -131,6 +134,8 @@
                   this.$el.append(this.template_day({ day : i+1 }));
                 }
               }
+              // window.scrollTo(0, lastMessage.offset().top);
+              $('body, html').animate({ scrollTop: lastMessage.offset().top }, 1000);
         }
     });
     
