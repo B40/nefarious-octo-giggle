@@ -16,7 +16,7 @@ body, input {
 }
 input {
   font-family: LatoRegular;
-  font-size: 45px;
+  font-size: 1.5em;
 }
 #signupWrapper {
   display: none;
@@ -39,18 +39,20 @@ input {
   margin: 0 auto;
   position: relative;
   top: -19px;
-  width: 750px;
+  width: 100%;
 }
 #loginName,
 #loginPassword {
   background: #eeeeee;
   border: 0;
-  box-sizing: border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
   height: 90px;
   margin: 20px 0;
   padding: 20px;
   text-align: center;
-  width: 750px;
+  width: 100%;
 }
 #loginPassword {
   background: none;
@@ -111,9 +113,9 @@ button:focus, input:focus {
   vertical-align: middle;
   line-height: 60px;
   font-family: LatoHairline;
-  font-size: 35px;
-  margin-bottom:-1.75em;
-  margin-top:1.75em;
+  font-size: 2.5em;
+  margin-bottom:-1.5em;
+  margin-top:1.5em;
 }
 
 .message {
@@ -121,7 +123,7 @@ button:focus, input:focus {
   border: 0.5em;
   border-style: solid;
   border-color: #efefef;
-  width: 750px;
+
   text-align: center;
 /*  display: block;*/
   margin: 1.5em auto;
@@ -137,15 +139,13 @@ button:focus, input:focus {
 #input {
   position: fixed;
   bottom: 40px;
-  left: 50% auto;
-  margin: 0 -390px;
-  padding: 20 1rem;
+  left: 0;
   height: 6rem;
   background: #efefef;
   border: 0px;
   box-sizing: border-box;
   text-align: center;
-  width: 750px;
+  width: 100%;
   font-family: LatoHairline;
   font-size:2em;
   line-height: 3rem;
